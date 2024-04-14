@@ -8,12 +8,12 @@ Tele-Op: Field Centric Swerve Drivetrain with WIP Auto-Align, Amp Scoring Only
 Endgame: Climb Only
 
 Subsystems:
-MAXSwerveModules - Creates the 4 Swerve Modules
-Drive Subsystem - Defines the characteristic of our drive type and setups drive type for Auto + Optimization
-Arm - PIDF Controlled, Relative Encoders
-Hook - PIDF Controlled, Absolute Encoders
-LEDS - State-Check with Arm to select colors
-Eyes - WIP Vision with RoboRIO
+* MAXSwerveModules - Creates the 4 Swerve Modules
+* Drive Subsystem - Defines the characteristic of our drive type and setups drive type for Auto + Optimization
+* Arm - PIDF Controlled, Relative Encoders
+* Hook - PIDF Controlled, Absolute Encoders
+* LEDS - State-Check with Arm to select colors
+* Eyes - WIP Vision with RoboRIO
 
 ## Prerequisites
 * SPARK MAX Firmware v1.6.2 - Adds features that are required for swerve
