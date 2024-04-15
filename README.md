@@ -3,17 +3,18 @@ See [the online changelog](https://github.com/REVrobotics/MAXSwerve-Java-Templat
 
 ## Description
 Official 2024 Code for FRC 253
-Auto: PathPlanner Routines with Scoring
-Tele-Op: Field Centric Swerve Drivetrain with WIP Auto-Align, Amp Scoring Only
-Endgame: Climb Only
 
-Subsystems:
-* MAXSwerveModules - Creates the 4 Swerve Modules
-* Drive Subsystem - Defines the characteristic of our drive type and setups drive type for Auto + Optimization
-* Arm - PIDF Controlled, Relative Encoders
-* Hook - PIDF Controlled, Absolute Encoders
-* LEDS - State-Check with Arm to select colors
-* Eyes - WIP Vision with RoboRIO
+- Auto: PathPlanner Routines with Scoring
+- Tele-Op: Field Centric Swerve Drivetrain with WIP Auto-Align, Amp Scoring Only
+- Endgame: Climb Only
+
+## Robot Subsystems:
+* MAXSwerveModules - Creates the 4 Swerve Modules - DRIVE
+* Drive Subsystem - Defines the characteristic of our drive type and setups drive type for Auto + Optimization - DRIVE
+* Arm - PIDF Controlled, Relative Encoders, AMP SCORE
+* Hook - PIDF Controlled, Absolute Encoders, AMP SCORE
+* LEDS - State-Check with Arm to select colors, VISUALS
+* Eyes - WIP Vision with RoboRIO - VISION
 
 ## Prerequisites
 * SPARK MAX Firmware v1.6.2 - Adds features that are required for swerve
