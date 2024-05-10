@@ -16,6 +16,21 @@ Official 2024 Code for FRC 253
 * LEDS - State-Check with Arm to select colors, VISUALS
 * Eyes - WIP Vision with RoboRIO - VISION
 
+##  Functionality
+* Autonomous (15 secs) - Autonomous Routine chosen by Drive Team for Scoring and Movement Score Bonuses.
+   1. All Routine Paths/Auto loaded from PathPlanner into Deploy Folder
+   2. Routines are defined inside of our Auto.java file handled and timed by a Sequential Command Group for Movement + Scoring
+   3. Utilizes an UI-based Autonomous Chooser inside of SmartDashboard for On-demand Selection by Drive Team
+   4. Result: 1 Note Auto with Leave. Playoff Auto is currently deployed.
+
+ * Teleoperated Periodic ( 2 min 15 secs)
+   1. Drive: Periodically updated odometry from AHRS NavX. Running main Drive Method for Field Centric Movement, Joystick Controlled from X-box Controllers
+   2. Arm: PIDF controlled for Relative Encoder-based Scoring setpoints, Button Activated from X-Box Controllers
+   3. Hook: PIDF controlled for Absolute Encoder-based Scoring setpoints, Button Activated from X-box Conttollers
+   4. LED: Switch Statement Based StateCheck for Automatic Syncing based on Arm Setpoints. Changes based on Arm State.
+  
+  *
+
 ## Prerequisites
 * SPARK MAX Firmware v1.6.2 - Adds features that are required for swerve
 * REVLib v2023.1.2 - Includes APIs for the new firmware features
