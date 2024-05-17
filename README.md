@@ -1,22 +1,22 @@
 # For-TEA-Simo Code - 2024 Crescendo - SVR & MBR
-See [the online changelog](https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/CHANGELOG.md) for information about updates to the template that may have been released since you created your project. Source Code: src/main -> java/fc -> robot -> All Java File Inside :)
+See [the online changelog](https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/CHANGELOG.md) for information about updates to the template that may have been released since you created your project. 
 
-## Description
-Official 2024 Code for FRC 253
+# Description
+Official 2024 Code for FRC 253 Boba Bots
 
 - Auto: PathPlanner Routines with Scoring
 - Tele-Op: Field Centric Swerve Drivetrain with WIP Auto-Align, Amp Scoring Only
 - Endgame: Climb Only
 
-## Robot Subsystems:
+# Physical Robot Subsystems:
 * MAXSwerveModules - Creates the 4 Swerve Modules - DRIVE
 * Drive Subsystem - Defines the characteristic of our drive type and setups drive type for Auto + Optimization - DRIVE
 * Arm - PIDF Controlled, Relative Encoders, AMP SCORE
 * Hook - PIDF Controlled, Absolute Encoders, AMP SCORE
-* LEDS - State-Check with Arm to select colors, VISUALS
-* Eyes - WIP Vision with RoboRIO - VISION
+* LEDs - State-Check with Arm to select colors, VISUALS
+* Vision - WIP Vision with RoboRIO - VISION
 
-##  Functionality
+#  Functionality
 * Autonomous (15 secs) - Autonomous Routine chosen by Drive Team for Scoring and Movement Score Bonuses.
    1. All Routine Paths/Auto loaded from PathPlanner into Deploy Folder
    2. Routines are defined inside of our Auto.java file and handled/timed by a Sequential Command Group for Movement + Scoring
@@ -35,6 +35,16 @@ Official 2024 Code for FRC 253
     3. Raises the Arm into the UP Position and drive the robot so it is positioned inside the hook-able zone
     4. Runs a PIDF Loop to perform a perpetual pull-up and maintain its on-stage postion.
 
+# Important File Locations   
+## Locations
+   - Source Code: src/main -> java/fc -> robot -> Defauly Java Files Inside
+   - Autos & Paths Config: src/main -> java/fc -> deploy -> All Json Files Inside 
+   - Subsystems: src/main -> java/fc -> robot -> "subsystem" Folder -> All Subsystem Files Inside
+   - Autos: src/main -> java/fc -> robot -> "Autonomous" Folder -> All Subsystem Files Inside
+   - 3rd Party Libraries: "vendordeps" Folder -> All 3rd Party Vendor Dependancies
+## Purpose of Files
+   - Source Code:
+        1. Constants.java - Contains all Constants, which are refered by "kVar", used throughout the codebase. Update persistent variables here in order to keep consistency and reduce ambugity when looking for values. Update this file to tune for PID loops in Drive Subsystem, Arm, and Hook. 
 ## Prerequisites
 * SPARK MAX Firmware v1.6.2 - Adds features that are required for swerve
 * REVLib v2023.1.2 - Includes APIs for the new firmware features
