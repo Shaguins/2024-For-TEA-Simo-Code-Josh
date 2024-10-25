@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Array;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -19,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.struct.SwerveModuleStateStruct;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
@@ -125,14 +128,15 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+  StructPublisher<Pose2d> publisherPose = NetworkTableInstance.getDefault()
       .getStructTopic("MyPose", Pose2d.struct).publish();
-    StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish();
+  StructArrayPublisher<SwerveModuleState> publisherSwerveState = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
+
     m_odometry.update(
         Rotation2d.fromDegrees(-Nav_x.getAngle()),
         new SwerveModulePosition[] {
@@ -141,6 +145,15 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+  SwerveModuleState[] statesLog = new SwerveModuleState[] {
+    m_frontLeft.getState(),
+    m_frontRight.getState(),
+    m_rearLeft.getState(),
+    m_rearRight.getState()
+    };
+
+
     double[] driveMotorCurrent = {
       m_frontLeft.getDriveCurrent(), m_frontRight.getDriveCurrent(),
       m_rearLeft.getDriveCurrent(), m_rearRight.getDriveCurrent()
@@ -158,8 +171,8 @@ public class DriveSubsystem extends SubsystemBase {
     double[] pose = {getPose().getX(), getPose().getY(), getPose().getRotation().getDegrees()};
     SmartDashboard.putNumberArray("POSE", pose);
 
-    publisher.set(getPose());
-    arrayPublisher.set(new Pose2d[] {getPose(), });
+    publisherPose.set(getPose());
+    publisherSwerveState.set(statesLog);
   }
 
   
@@ -177,6 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return m_kinematics.toChassisSpeeds(m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState());
   }
+
 
 
   //Drive !ROBOT! Centric for Auto
