@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.littletonrobotics.urcl.URCL;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -23,6 +24,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -71,6 +73,10 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Drive forward BLUE/RED", Auto.driveAutoCommand());
     m_chooser.addOption("Play Off Auto (D: 9 sec), 1 Amp", Auto.ScorePlayoffAuto());
     SmartDashboard.putData("AUTO CHOICES", m_chooser);
+
+    //Advantage Scope Reference:
+    DataLogManager.start();
+    URCL.start();
 
     Thread visionThread = new Thread(() -> apriltagVisionThreadProc());
     visionThread.setDaemon(true);

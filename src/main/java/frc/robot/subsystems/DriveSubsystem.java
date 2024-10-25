@@ -9,33 +9,28 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.RobotContainer;
 import frc.utils.SwerveUtils;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
@@ -130,6 +125,11 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+      .getStructTopic("MyPose", Pose2d.struct).publish();
+    StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish();
+
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
@@ -157,6 +157,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", RobotContainer.getInstance().field);
     double[] pose = {getPose().getX(), getPose().getY(), getPose().getRotation().getDegrees()};
     SmartDashboard.putNumberArray("POSE", pose);
+
+    publisher.set(getPose());
+    arrayPublisher.set(new Pose2d[] {getPose(), });
   }
 
   
