@@ -22,6 +22,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.struct.SwerveModuleStateStruct;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
@@ -127,11 +129,25 @@ public class DriveSubsystem extends SubsystemBase {
       this // Reference to this subsystem to set requirements
     );
   }
+  DoublePublisher publisherNavX;
+
+  public void robotInit(){
+  NetworkTableInstance instNavX = NetworkTableInstance.getDefault();
+  NetworkTable table = instNavX.getTable("datatableNavX");
+  publisherNavX = table.getDoubleTopic("headingLogged").publish();
+  }
+
+  double headingLogged = getHeading();
+
+  public void robotPeriodic(){
+    publisherNavX.set(headingLogged);
+  }
 
   StructPublisher<Pose2d> publisherPose = NetworkTableInstance.getDefault()
       .getStructTopic("MyPose", Pose2d.struct).publish();
   StructArrayPublisher<SwerveModuleState> publisherSwerveState = NetworkTableInstance.getDefault()
       .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+  
 
   @Override
   public void periodic() {

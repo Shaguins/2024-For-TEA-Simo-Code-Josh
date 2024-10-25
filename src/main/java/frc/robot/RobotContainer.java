@@ -14,6 +14,9 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -143,6 +146,8 @@ public class RobotContainer {
   If we want field relative control, we set field relative to true and if we want to limit the jerkyness of the drive, we can set rate limit to true
   Rate limit is basically setting the limit of one request. (ie: controller requests 1.00 but we limit it to 0.8)
   */
+
+
 
     field = new Field2d();
     
