@@ -44,7 +44,10 @@ Official 2024 Code for FRC 253 Boba Bots
    - 3rd Party Libraries: "vendordeps" Folder -> All 3rd Party Vendor Dependancies
 ## Purpose of Files
    - Source Code:
-        1. Constants.java - Contains all Constants, which are refered by "kVar", used throughout the codebase. Update persistent variables here in order to keep consistency and reduce ambugity when looking for values. Update this file to tune for PID loops in Drive Subsystem, Arm, and Hook. 
+        1. Constants.java - Contains all Constants, which are refered by "kVar", used throughout the codebase. Update persistent variables here in order to keep consistency and reduce ambugity when looking for values. Update this file to tune for PID loops in Drive Subsystem, Arm, and Hook.
+        2. RobotContainer.java - Creates the Arm, Hook, and DriveSubsystem objects used to pass in commands for functionality. Button Bindings for both driver and operator controllers. Also determines the current alliance color used for autonomous.
+        3. Robot.java - Contains core runtime and intitialization code used for all periodics and disabled states. Autochooser is utilized here for selecting autonomous routines through Smartdashboard for on-demand change by driveteam where deploying code is not available.
+        4. States.java - Enumeration states for Arm and Hook Encoder positions. Utilizes switch statements in respective subsystem file to choose between desired position states.
 ## Prerequisites
 * SPARK MAX Firmware v1.6.2 - Adds features that are required for swerve
 * REVLib v2023.1.2 - Includes APIs for the new firmware features
