@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
     //Advantage Scope Reference:
     DataLogManager.start();
     URCL.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
 
     Thread visionThread = new Thread(() -> apriltagVisionThreadProc());
     visionThread.setDaemon(true);
