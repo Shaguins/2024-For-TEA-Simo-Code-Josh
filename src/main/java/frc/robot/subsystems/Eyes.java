@@ -1,11 +1,30 @@
 package frc.robot.subsystems;
 
+import java.lang.reflect.Array;
+
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.RawFiducial;
 import frc.utils.CoordinateSpace;
 
 public class Eyes {
+      
+    // public static Array returnRawFiduicals{
+    //     RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
+    // for (RawFiducial fiducial : fiducials) {
+    //     int id = fiducial.id;                    // Tag ID
+    //     double txnc = fiducial.txnc;             // X offset (no crosshair)
+    //     double tync = fiducial.tync;             // Y offset (no crosshair)
+    //     double ta = fiducial.ta;                 // Target area
+    //     double distToCamera = fiducial.distToCamera;  // Distance to camera
+    //     double distToRobot = fiducial.distToRobot;    // Distance to robot
+    //     double ambiguity = fiducial.ambiguity;   // Tag pose ambiguity
+    // }
+    //     return fiducials;
+    // }
 
+    
 
     // 1. Compute direction offset from tag
     public static double widthOffset(AprilTagDetection aprilTag, CoordinateSpace coordinateSpace) {
