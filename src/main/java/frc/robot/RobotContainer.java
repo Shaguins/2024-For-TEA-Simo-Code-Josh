@@ -29,9 +29,8 @@ import frc.robot.Constants.HookConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Eyes;
 import frc.robot.subsystems.Hook;
-import frc.robot.subsystems.LED;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -67,9 +66,7 @@ public class RobotContainer {
   public final DriveSubsystem m_robotDrive;
   public final Arm arm;
   public final Hook hook;
-  public final LED led;
   
-  public final Field2d field;
 
   /*READ ME:
   Creates 2 Xbox Controllers for the Operator and Driver
@@ -121,7 +118,6 @@ public class RobotContainer {
     arm = Arm.getInstance();
     hook = Hook.getInstance();
     m_robotDrive = new DriveSubsystem();
-    led = LED.getInstance();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -137,6 +133,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
+  }
 
      /*READ ME: ^^^
   The default drive command which is defined in DriveSubsystems.java is the main method of drive used in our 2024 Drivetrain.
@@ -146,89 +143,6 @@ public class RobotContainer {
   If we want field relative control, we set field relative to true and if we want to limit the jerkyness of the drive, we can set rate limit to true
   Rate limit is basically setting the limit of one request. (ie: controller requests 1.00 but we limit it to 0.8)
   */
-
-
-
-    field = new Field2d();
-    
-    PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
-      field.setRobotPose(pose);
-    });
-  }
-
-  public Command goToPositionBezier(Pose2d target) {
-    Rotation2d bezierControlPointHeading = Rotation2d.fromRadians(
-      Math.atan2(
-        target.getY() - m_robotDrive.getPose().getY(),
-        target.getX() - m_robotDrive.getPose().getX()
-      )
-    );
-    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-        new Pose2d(
-          m_robotDrive.getPose().getX(),
-          m_robotDrive.getPose().getY(),  
-          bezierControlPointHeading
-        ),
-        new Pose2d(target.getX(), target.getY(), target.getRotation())
-    );
-
-    return AutoBuilder.followPath(
-      new PathPlannerPath(
-        bezierPoints, 
-        Constants.AutoConstants.pathConstraints,
-        new GoalEndState(0.0, target.getRotation())
-      )
-    );
-  }
-
-  /**
-   * Create and return a command to follow a path that takes the robot to the target pose.
-   *
-   * @return The current alliance of the robot.
-   */
-  public Command goToPosition(Pose2d target, float goalEndVelocity, float rotationDelayDistance) {
-    // Create the constraints to use while pathfinding
-    PathConstraints constraints = Constants.AutoConstants.pathConstraints;
-    // Since AutoBuilder is configured, we can use it to build pathfinding commands
-    Command pathfindingCommand = AutoBuilder.pathfindToPose(
-            target,
-            constraints,
-            goalEndVelocity, // Goal end velocity in meters/sec
-            rotationDelayDistance // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-    );
-    return pathfindingCommand;
-  }
-
-  public Command pathFindtoPath(String pathname) {
-    // Create the constraints to use while pathfinding
-    PathConstraints constraints = Constants.AutoConstants.pathConstraints;
-    // Since AutoBuilder is configured, we can use it to build pathfinding commands
-    Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
-            PathPlannerPath.fromPathFile(pathname),
-            constraints,
-            2.
-           );
-    return pathfindingCommand;
-  }
-
-  public Command goToPositionFromPath(String pathname) {
-    // Load the path we want to pathfind to and follow
-    PathPlannerPath path = PathPlannerPath.fromPathFile(pathname);
-
-    // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
-    PathConstraints constraints = new PathConstraints(
-            3.0, 3.0,
-            Units.degreesToRadians(540), Units.degreesToRadians(720));
-
-    // Since AutoBuilder is configured, we can use it to build pathfinding commands
-    Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
-            path,
-            constraints,
-            0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-    );
-
-    return pathfindingCommand;
-  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -277,16 +191,6 @@ public class RobotContainer {
         new RunCommand(() -> hook.setHookState(States.HookPos.STOW), hook)
       );
 
-    driver_Y.whileTrue(
-      goToPosition(
-        new Pose2d(0.85, 1.18, Rotation2d.fromDegrees(90)), 0, 0)
-    );
-
-    driver_X.whileTrue(
-      goToPositionBezier(
-        new Pose2d(0.85, 1.18, Rotation2d.fromDegrees(90))
-      )
-    );
 
     // );
 
@@ -327,22 +231,6 @@ public class RobotContainer {
         arm.setArmState(States.ArmPos.STOW); 
         hook.setHookState(States.HookPos.STOW);
        }, arm, hook)
-      );
-
-    /* READ ME:
-     * This command runs the Auto-Align command for the AMP shot - WIP
-     * Utilizes Eyes.java and Robot.java to run vision code and calculate the wanted rotation rate
-     * Aligns with the amp along the Z-axis rotationally but will not align with the amp from the X&Y-axis transversely
-     */
-
-    operator_B
-      .whileTrue(
-       new RunCommand(() -> {
-        SmartDashboard.putNumber("B button Working", 1);
-         double rotate = Robot.getAprilTagOffset();
-         m_robotDrive.drive(0,0, rotate, true, false);
-
-       }, m_robotDrive)
       );
 
       /* READ ME:
@@ -424,63 +312,3 @@ With Invaluable Help from:
   Mentor Katie :D
   Everyone else from inside and outside of 253
 */
-
-// ====================================================================================
-/*
- * Legacy Code:
- * 
-  public Command getPathPlannerCommand1() {
-    return new PathPlannerAuto("Simple Auto Part 1");
-  }
-
-  public Command getPathPlannerCommand2(){
-    return new PathPlannerAuto("Simple Auto Part 2");
-  }
-
-  public void bindOI(){
-
-    // driver_X
-    //     .onTrue(stowArm());
-    
-    driver_Y
-        .onTrue(scoreArm());
-
-  public Command stowArm() {
-    return new RunCommand(() -> arm.setArmState(States.ArmPos.STOW), arm);
-  }
-
-  public Command scoreArm(){
-    return new RunCommand(() -> arm.setArmState(States.ArmPos.SCORE), arm);
-  }
-
-  public Command stowHook() {
-    return new RunCommand(() -> hook.setHookState(States.HookPos.STOW), hook);
-  }
-
-  public Command score() {
-    return new RunCommand(() -> {
-        arm.setArmState(States.ArmPos.SCORE); 
-        hook.setHookState(States.HookPos.SCORE);
-       }, arm, hook);
-  }
-
-  WORK-IN-PROGRESS/NOT FINISHED Code:
-
-
-    driver_B.whileTrue(
-      goToPositionBezier(
-        new Pose2d(0, 0, Rotation2d.fromDegrees(0))
-      )
-
-    driver_X.whileTrue(
-      goToPosition(
-        new Pose2d(0.85, 1.18, Rotation2d.fromDegrees(-90)),
-        0, 
-        0)
-    );
-
-    driver_Y.whileTrue(
-      pathFindtoPath("FlyTest")
-    );
-
- */

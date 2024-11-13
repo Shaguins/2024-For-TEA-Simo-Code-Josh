@@ -188,8 +188,4 @@ public final class Constants {
     public static double kD = 0.0;
     
   }
-  public static final class VisionConstants {
-    public static final int cameraWidth = 320;
-    public static final int cameraHeight = 240; 
-  }
 }

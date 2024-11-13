@@ -111,15 +111,12 @@ public class Hook extends SubsystemBase {
         switch (state) {
             case STOW:
                 setHookPosition(HookConstants.stow);
-                LED.hookPosition = States.HookPos.STOW;
                 break;
             case OPEN:
                 setHookPosition(HookConstants.open);
-                LED.hookPosition = States.HookPos.OPEN;
                 break;
             default:
                 setHookPosition(HookConstants.score);
-                LED.hookPosition = States.HookPos.SCORE;
                 break;
         }
     }

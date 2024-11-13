@@ -271,7 +271,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumberArray("Turn motor currents", turnMotorCurrent);
     SmartDashboard.putNumberArray("Drive motor currents", driveMotorCurrent);
 
-    SmartDashboard.putData("Field", RobotContainer.getInstance().field);
+    SmartDashboard.putData("Field", m_field);
     double[] pose = {getPose().getX(), getPose().getY(), getPose().getRotation().getDegrees()};
     SmartDashboard.putNumberArray("POSE", pose);
 
