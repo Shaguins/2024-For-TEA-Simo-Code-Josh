@@ -116,6 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
       });
   
   //Return MegaTag2 Pose from fusing heading of Gyro with Vision
+  // Non-Implemented Code for mt2. Enable trust factors? (KOM)
+  //If more than 2 tags in LOS calc error from average (dont't swap pipeline on enable)
   public void updateOdometry() {
     m_poseEstimator.update(
         Nav_x.getRotation2d(),
@@ -126,7 +128,7 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
         });
 
-    boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean useMegaTag2 = true; //only use Megatag bc gyro reading is 100% more accurate than mt1 yaw calc
     boolean doRejectUpdate = false;
     if(useMegaTag2 == false)
     {
@@ -234,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-
+    //Main Odometry Update
     m_odometry.update(
         Rotation2d.fromDegrees(-Nav_x.getAngle()),
         new SwerveModulePosition[] {
