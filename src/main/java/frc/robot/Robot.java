@@ -20,7 +20,9 @@ import edu.wpi.first.apriltag.AprilTagPoseEstimator;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -71,6 +73,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
+    // CameraServer.startAutomaticCapture(limelightFeed);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -93,8 +97,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Command m_AutoSchedule = AutoModeManager.returnAutoCommand();
-    m_AutoSchedule.cancel();
   }
 
   /** This function is called periodically during operator control. */
