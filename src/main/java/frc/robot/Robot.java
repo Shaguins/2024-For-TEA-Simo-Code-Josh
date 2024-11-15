@@ -32,6 +32,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -74,7 +75,9 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
-    // CameraServer.startAutomaticCapture(limelightFeed);
+    // // CameraServer.startAutomaticCapture(limelightFeed);
+    // CameraServer.addCamera(limelightFeed);
+    // Shuffleboard.getTab("tab").add(limelightFeed);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
