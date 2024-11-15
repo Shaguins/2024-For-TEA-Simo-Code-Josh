@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Bobaboard.ControlHub;
+import frc.robot.commands.DriveToPose;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.HookConstants;
@@ -205,6 +206,10 @@ public class RobotContainer {
   //Returns isRed or isBlue from FMS @ Start of the Match
   public static Optional<Alliance> isRedAlliance(){
     return DriverStation.getAlliance();
+  }
+
+  public Command ampAutoDrive() {
+    return new DriveToPose(FieldSetup.allianceAmpEntryPoseSupplier, FieldSetup.ampEntryTolerance);
   }
 
 

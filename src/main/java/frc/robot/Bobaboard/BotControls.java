@@ -41,6 +41,8 @@ public class BotControls {
                 rContainer.IntakeNotePrep();
             }else if (ControlHub.driverController.R_Bumper.wasActivated()){
                 rContainer.IntakeNoteStow();
+            }else if (ControlHub.driverController.R_Trigger.wasActivated()){
+                rContainer.ampAutoDrive();
             }
         }else{
             if (ControlHub.operatorController.L_Bumper.wasActivated()) {

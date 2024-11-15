@@ -474,6 +474,20 @@ public class DriveSubsystem extends SubsystemBase {
   public Rotation2d getRotation2DHeading(){
     return Nav_x.getRotation2d();
   }
+
+  public Pose2d getCurrentPose() {
+    return odometryVision.getEstimatedPosition();
+  }
+
+  public void Xmode(){
+      SwerveModuleState[] lockStates = {
+        new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(45))
+      };
+  setModuleStates(lockStates);
+}
   /**
    * Returns the turn rate of the robot.
    *
