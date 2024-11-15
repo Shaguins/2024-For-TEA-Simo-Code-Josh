@@ -75,6 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //create a shuffle board tab name Competition to add limelight feed as a widget 
     HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
     Shuffleboard.getTab("Competition")
       .add("limelight", limelightFeed)
