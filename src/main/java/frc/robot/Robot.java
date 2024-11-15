@@ -38,7 +38,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Autonomous.AutoModeManager;
+import frc.robot.Autonomous.AutoModeManager.DesiredMode;
+import frc.robot.Bobaboard.BotControls;
+import frc.robot.Bobaboard.ControlHub;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.utils.CoordinateSpace;
 
@@ -61,7 +65,7 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     URCL.start();
     DriverStation.startDataLog(DataLogManager.getLog());
-
+    BotControls.ChooseControllers();
   }
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -107,6 +111,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // var alliance = DriverStation.getAlliance();
     SmartDashboard.putString("ALLIANCE", RobotContainer.isRedAlliance().get().toString());
+    ControlHub.update();
+    BotControls.oneControllerMode();
   }
 
   @Override
