@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.littletonrobotics.urcl.URCL;
@@ -32,6 +33,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -74,6 +76,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //create a shuffle board tab name Competition to add limelight feed as a widget 
+    HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
+    Shuffleboard.getTab("Competition")
+      .add("limelight", limelightFeed)
+      .withWidget(BuiltInWidgets.kCameraStream);
+                // .withProperties(Map.of("Show Crosshair", false, "Show Controls", false))
+                // .withPosition(0, 0);
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
