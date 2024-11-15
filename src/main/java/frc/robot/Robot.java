@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     URCL.start();
     DriverStation.startDataLog(DataLogManager.getLog());
+    ControlHub.getInstance();
     BotControls.ChooseControllers();
   }
   /**

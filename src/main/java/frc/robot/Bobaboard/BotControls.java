@@ -17,14 +17,19 @@ public class BotControls {
     Hook hook = Hook.getInstance();
     DriveSubsystem m_robotDrive = new DriveSubsystem();
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
-    static boolean OneControllerQuery;
+    static boolean OneControllerQuery = true;
 
-    public final static void ChooseControllers(){
+    public final static boolean ChooseControllers(){
         ControllerMode.addOption("One Controller", true);
         ControllerMode.addOption("Two Controller(s)", false);
         SmartDashboard.putData("Controller Selection", ControllerMode);
+        if (ControllerMode.getSelected() == null){
+            OneControllerQuery = true;
+        }else{
         Boolean m_ControllerSelected = ControllerMode.getSelected();
         OneControllerQuery = m_ControllerSelected;
+        }
+        return OneControllerQuery;
     }
 
     public static void oneControllerMode() {
