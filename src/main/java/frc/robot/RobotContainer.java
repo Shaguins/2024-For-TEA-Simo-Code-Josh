@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Autonomous.AutoModeManager;
+import frc.robot.Bobaboard.BotControls;
 import frc.robot.Bobaboard.ControlHub;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -69,7 +71,7 @@ public class RobotContainer {
   public final Arm arm;
   public final Hook hook;
   private static RobotContainer instance = null;
-
+  public final AutoModeManager m_AutoModeManager;
    /*READ ME:
   A static instance of the Robot Container with all its contents
   */
@@ -85,6 +87,7 @@ public class RobotContainer {
     arm = Arm.getInstance();
     hook = Hook.getInstance();
     m_robotDrive = new DriveSubsystem();
+    m_AutoModeManager = new AutoModeManager();
 
   m_robotDrive.setDefaultCommand(new RunCommand(
       () -> m_robotDrive.drive(
@@ -94,6 +97,7 @@ public class RobotContainer {
           true, true),
       m_robotDrive));
     // Configure default commands
+    SmartDashboard.putData("Auto Mode", AutoModeManager.mModeChooser);
   }
 
 

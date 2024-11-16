@@ -4,6 +4,7 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Arm;
 
 public final class AutoModeManager{
     public enum DesiredMode {
@@ -15,9 +16,15 @@ public final class AutoModeManager{
         PLAYOFF_AUTO
 	}
 
+    public static AutoModeManager AutoQueue;
+    public static AutoModeManager getInstance() {
+        if(AutoQueue == null) AutoQueue = new AutoModeManager();
+        return AutoQueue;
+    }
+
     private DesiredMode defaultMode = DesiredMode.DO_NOTHING;
     //private Optional<AutoModeBase> mAutoMode = Optional.empty();
-    private static SendableChooser<DesiredMode> mModeChooser = new SendableChooser<>();
+    public static SendableChooser<DesiredMode> mModeChooser = new SendableChooser<>();
     public static Command m_autonomousCommand;
 
     public AutoModeManager() {
@@ -27,20 +34,21 @@ public final class AutoModeManager{
     mModeChooser.addOption("One Notw", DesiredMode.ONE_NOTE_AUTO);
     mModeChooser.addOption("IgnoreReturn", DesiredMode.RETURN_PATH_AUTO);
     mModeChooser.addOption("Playoff", DesiredMode.PLAYOFF_AUTO);
-    SmartDashboard.putData("Auto Mode", mModeChooser);
+    mModeChooser.setDefaultOption("Default Auto", DesiredMode.DO_NOTHING);
+
     }
 
-    public void updateAutoMode(){
+    public static void updateAutoMode(){
         DesiredMode desiredMode = mModeChooser.getSelected();
         if (desiredMode == null) {
 			    desiredMode = DesiredMode.DO_NOTHING;
         }else{
-        System.out.println("AutoChosen");
+        System.out.println("Auto Chosen");
         }   
-        grabAutoMode(desiredMode);
+        m_autonomousCommand = grabAutoMode(desiredMode);
     }
 
-    public void grabAutoMode(DesiredMode data){
+    public static Command grabAutoMode(DesiredMode data){
         switch(data){
             case DO_NOTHING:
 				m_autonomousCommand = DoNothingCommand.NoAuto();
@@ -63,9 +71,6 @@ public final class AutoModeManager{
 			    System.out.println("ERROR: unexpected auto mode!");
 				break;
         }
-    }
-    
-    public static Command returnAutoCommand(){
         return m_autonomousCommand;
     }
 

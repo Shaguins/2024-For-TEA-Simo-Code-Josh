@@ -56,6 +56,7 @@ import frc.utils.CoordinateSpace;
  */
 public class Robot extends TimedRobot {
   public RobotContainer m_robotContainer;
+  private final ControlHub mControlBoard = ControlHub.getInstance();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -67,9 +68,12 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     URCL.start();
     DriverStation.startDataLog(DataLogManager.getLog());
-    ControlHub.getInstance();
-    BotControls.ChooseControllers();
-  }
+    // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
+    // Shuffleboard.getTab("Competition")
+    //   .add("Limelight", limelightFeed)
+    //   .withWidget(BuiltInWidgets.kCameraStream);
+      // SmartDashboard.putString("Auto Running", AutoModeManager.mModeChooser.getSelected().toString());
+  } 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
@@ -77,10 +81,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //create a shuffle board tab name Competition to add limelight feed as a widget 
-    HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
-    Shuffleboard.getTab("Competition")
-      .add("limelight", limelightFeed)
-      .withWidget(BuiltInWidgets.kCameraStream);
                 // .withProperties(Map.of("Show Crosshair", false, "Show Controls", false))
                 // .withPosition(0, 0);
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -92,6 +92,7 @@ public class Robot extends TimedRobot {
     // // CameraServer.startAutomaticCapture(limelightFeed);
     // CameraServer.addCamera(limelightFeed);
     // Shuffleboard.getTab("tab").add(limelightFeed);
+        SmartDashboard.putBoolean("key", ControlHub.driverController.A_Button.wasActivated());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -104,16 +105,18 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-      Command m_AutoSchedule = AutoModeManager.returnAutoCommand();
-      m_AutoSchedule.schedule();
+    AutoModeManager.updateAutoMode();
+    AutoModeManager.m_autonomousCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit() {
+    BotControls.ChooseControllers();
   }
 
   /** This function is called periodically during operator control. */
