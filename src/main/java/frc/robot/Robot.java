@@ -56,7 +56,8 @@ import frc.utils.CoordinateSpace;
  */
 public class Robot extends TimedRobot {
   public RobotContainer m_robotContainer;
-  private final ControlHub mControlBoard = ControlHub.getInstance();
+  private final static ControlHub mControlBoard = ControlHub.getInstance();
+  private final BotControls mDriveControls = new BotControls();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -68,6 +69,7 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     URCL.start();
     DriverStation.startDataLog(DataLogManager.getLog());
+    mDriveControls.PutControllerOption();
     // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
     // Shuffleboard.getTab("Competition")
     //   .add("Limelight", limelightFeed)
@@ -92,7 +94,7 @@ public class Robot extends TimedRobot {
     // // CameraServer.startAutomaticCapture(limelightFeed);
     // CameraServer.addCamera(limelightFeed);
     // Shuffleboard.getTab("tab").add(limelightFeed);
-        SmartDashboard.putBoolean("key", ControlHub.driverController.A_Button.wasActivated());
+        SmartDashboard.putBoolean("key", mControlBoard.driverController.A_Button.wasActivated());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -116,7 +118,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    BotControls.ChooseControllers();
+    mDriveControls.selectControllerOption();
   }
 
   /** This function is called periodically during operator control. */
@@ -124,8 +126,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // var alliance = DriverStation.getAlliance();
     SmartDashboard.putString("ALLIANCE", RobotContainer.isRedAlliance().get().toString());
-    ControlHub.update();
-    BotControls.oneControllerMode();
+    mControlBoard.update();
+    mDriveControls.oneControllerMode();
   }
 
   @Override

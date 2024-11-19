@@ -72,6 +72,7 @@ public class RobotContainer {
   public final Hook hook;
   private static RobotContainer instance = null;
   public final AutoModeManager m_AutoModeManager;
+  public final ControlHub m_ControlHub;
    /*READ ME:
   A static instance of the Robot Container with all its contents
   */
@@ -88,12 +89,14 @@ public class RobotContainer {
     hook = Hook.getInstance();
     m_robotDrive = new DriveSubsystem();
     m_AutoModeManager = new AutoModeManager();
+    m_ControlHub = ControlHub.getInstance();
+
 
   m_robotDrive.setDefaultCommand(new RunCommand(
       () -> m_robotDrive.drive(
-          -MathUtil.applyDeadband(ControlHub.driverController.getLeftY(), OIConstants.kDriveDeadband),
-          -MathUtil.applyDeadband(ControlHub.driverController.getLeftX(), OIConstants.kDriveDeadband),
-          -MathUtil.applyDeadband(ControlHub.driverController.getRightX(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_ControlHub.driverController.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_ControlHub.driverController.getLeftX(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_ControlHub.driverController.getRightX(), OIConstants.kDriveDeadband),
           true, true),
       m_robotDrive));
     // Configure default commands

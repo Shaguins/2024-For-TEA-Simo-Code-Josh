@@ -15,8 +15,8 @@ public class ControlHub {
 		return mInstance;
 	}
 
-	public static XboxControllerSetup driverController;
-	public static XboxControllerSetup operatorController;
+	public XboxControllerSetup driverController;
+	public XboxControllerSetup operatorController;
 
 	private ControlHub() {
 		driverController = new XboxControllerSetup(Constants.OIConstants.kDriverControllerPort);
@@ -24,7 +24,7 @@ public class ControlHub {
 	}
 
 
-	public static void update() {
+	public void update() {
 		driverController.update();
 		operatorController.update();
 	}

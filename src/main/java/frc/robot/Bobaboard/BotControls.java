@@ -15,51 +15,55 @@ public class BotControls {
 	static RobotContainer rContainer = RobotContainer.getInstance();
     Arm arm = Arm.getInstance();
     Hook hook = Hook.getInstance();
+    static ControlHub controlHub = ControlHub.getInstance();
     DriveSubsystem m_robotDrive = new DriveSubsystem();
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
     static boolean OneControllerQuery = true;
 
 
-    public final static boolean ChooseControllers(){
+    public final void PutControllerOption(){
         ControllerMode.addOption("One Controller", true);
         ControllerMode.addOption("Two Controller(s)", false);
         SmartDashboard.putData("Controller Selection", ControllerMode);
+    }
+
+    public final void selectControllerOption(){
         if (ControllerMode.getSelected() == null){
             OneControllerQuery = true;
         }else{
         Boolean m_ControllerSelected = ControllerMode.getSelected();
         OneControllerQuery = m_ControllerSelected;
         }
-        return OneControllerQuery;
     }
 
-    public static void oneControllerMode() {
+
+    public void oneControllerMode() {
         if (OneControllerQuery){
-            if (ControlHub.driverController.A_Button.wasActivated() == true) {
+            if (controlHub.driverController.A_Button.wasActivated() == true) {
                 rContainer.FallOffChain();
-            }else if (ControlHub.driverController.B_Button.wasActivated() == true){
+            }else if (controlHub.driverController.B_Button.wasActivated() == true){
                 rContainer.ClimbChain();
-            }else if (ControlHub.driverController.X_Button.wasActivated() == true){
+            }else if (controlHub.driverController.X_Button.wasActivated() == true){
                 rContainer.StowArm();
-            }else if (ControlHub.driverController.Y_Button.wasActivated() == true){
+            }else if (controlHub.driverController.Y_Button.wasActivated() == true){
                 rContainer.ScoreNote();
-            }else if (ControlHub.driverController.L_Bumper.wasActivated() == true){
+            }else if (controlHub.driverController.L_Bumper.wasActivated() == true){
                 rContainer.IntakeNotePrep();
-            }else if (ControlHub.driverController.R_Bumper.wasActivated() == true){
+            }else if (controlHub.driverController.R_Bumper.wasActivated() == true){
                 rContainer.IntakeNoteStow();
             }
         }else{
-            if (ControlHub.operatorController.L_Bumper.wasActivated() == true) {
+            if (controlHub.operatorController.L_Bumper.wasActivated() == true) {
                 rContainer.FallOffChain();
-            }else if (ControlHub.operatorController.R_Bumper.wasActivated() == true){
+            }else if (controlHub.operatorController.R_Bumper.wasActivated() == true){
                 rContainer.ClimbChain();
-            }else if (ControlHub.operatorController.X_Button.wasActivated() == true){
+            }else if (controlHub.operatorController.X_Button.wasActivated() == true){
                 rContainer.StowArm();
-            }else if (ControlHub.operatorController.Y_Button.wasActivated() == true){
+            }else if (controlHub.operatorController.Y_Button.wasActivated() == true){
                 rContainer.ScoreNote();
-            }else if (ControlHub.driverController.L_Bumper.wasActivated() == true){
+            }else if (controlHub.driverController.L_Bumper.wasActivated() == true){
                 rContainer.IntakeNotePrep();
-            }else if (ControlHub.driverController.R_Bumper.wasActivated() == true){
+            }else if (controlHub.driverController.R_Bumper.wasActivated() == true){
                 rContainer.IntakeNoteStow();
             }
         }
