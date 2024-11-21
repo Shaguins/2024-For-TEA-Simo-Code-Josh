@@ -16,7 +16,6 @@ public class BotControls {
     Arm arm = Arm.getInstance();
     Hook hook = Hook.getInstance();
     static ControlHub controlHub = ControlHub.getInstance();
-    DriveSubsystem m_robotDrive = new DriveSubsystem();
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
     static boolean OneControllerQuery = true;
 
