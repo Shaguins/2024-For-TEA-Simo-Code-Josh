@@ -178,16 +178,16 @@ public void setDeadband(double deadband) {
 						buttonCheck = (getPOV() == 270);
 						break;
 					case A_BUTTON:
-						buttonCheck = (getRawButtonPressed(A_BUTTON));
+						buttonCheck = (getFaceButtonA());
 						break;
 					case X_BUTTON:
-						buttonCheck = (getRawButtonPressed(X_BUTTON));
+						buttonCheck = (getFaceButtonX());
 						break;
 					case Y_BUTTON:
-						buttonCheck = (getRawButtonPressed(Y_BUTTON));
+						buttonCheck = (getFaceButtonY());
 						break;
 					case B_BUTTON:
-						buttonCheck = (getRawButtonPressed(B_BUTTON));
+						buttonCheck = (getFaceButtonB());
 						break;
 					default:
 						buttonCheck = false;

@@ -17,7 +17,7 @@ public class BotControls {
     Hook hook = Hook.getInstance();
 
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
-    boolean OneControllerQuery = true;
+    public boolean OneControllerQuery = true;
 
 
     public final void PutControllerOption(){
@@ -37,29 +37,35 @@ public class BotControls {
 
     public final void o_reportBotControlData(){
         SmartDashboard.putBoolean("m_ControllerSelected", OneControllerQuery);
-        SmartDashboard.putBoolean("Driver A Button", controlHub.driverController.getFaceButtonA());
-        SmartDashboard.putBoolean("Driver B Button", controlHub.driverController.getFaceButtonB());
+        SmartDashboard.putBoolean("Driver A Button", controlHub.driverController.A_Button.wasActivated());
+        SmartDashboard.putBoolean("Driver B Button", controlHub.driverController.X_Button.wasActivated());
         SmartDashboard.putBoolean("Driver X Button", controlHub.driverController.getFaceButtonX());
         SmartDashboard.putBoolean("Driver Y Button", controlHub.driverController.getFaceButtonY());
         SmartDashboard.putBoolean("Operator X Button", controlHub.operatorController.getFaceButtonX());
         SmartDashboard.putBoolean("Operator Y Button", controlHub.operatorController.getFaceButtonY());
     }
 
-    public void runControllerMode() {
-        if (OneControllerQuery){
-            if (controlHub.driverController.getFaceButtonA()) {
+    public final void RunRobot(){
+        if (OneControllerQuery == true){
+            if (controlHub.driverController.A_Button.wasActivated()) {
+                System.out.println("A Button Detected");
                 rContainer.FallOffChain();
-            }else if (controlHub.driverController.getFaceButtonB()){
+            }else if (controlHub.driverController.B_Button.wasActivated()){
                 rContainer.ClimbChain();
-            }else if (controlHub.driverController.getFaceButtonX()){
+            }
+
+            if (controlHub.driverController.X_Button.wasActivated()){
                 rContainer.StowArm();
-            }else if (controlHub.driverController.getYButton()){
+            }else if (controlHub.driverController.Y_Button.wasActivated()){
                 rContainer.ScoreNote();
-            }else if (controlHub.driverController.L_Bumper.wasActivated()){
+            }
+            
+            if (controlHub.driverController.L_Bumper.wasActivated()){
                 rContainer.IntakeNotePrep();
             }else if (controlHub.driverController.R_Bumper.wasActivated()){
                 rContainer.IntakeNoteStow();
             }
+            
         }else{
             if (controlHub.operatorController.L_Bumper.wasActivated()) {
                 rContainer.FallOffChain();
@@ -76,6 +82,7 @@ public class BotControls {
             }
         }
     }
+    
 
 
 }
