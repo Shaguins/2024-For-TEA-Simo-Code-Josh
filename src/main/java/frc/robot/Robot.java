@@ -70,11 +70,6 @@ public class Robot extends TimedRobot {
     URCL.start();
     DriverStation.startDataLog(DataLogManager.getLog());
     mDriveControls.PutControllerOption();
-    // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
-    // Shuffleboard.getTab("Competition")
-    //   .add("Limelight", limelightFeed)
-    //   .withWidget(BuiltInWidgets.kCameraStream);
-      // SmartDashboard.putString("Auto Running", AutoModeManager.mModeChooser.getSelected().toString());
   } 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -82,19 +77,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //create a shuffle board tab name Competition to add limelight feed as a widget 
-                // .withProperties(Map.of("Show Crosshair", false, "Show Controls", false))
-                // .withPosition(0, 0);
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
-    // // CameraServer.startAutomaticCapture(limelightFeed);
-    // CameraServer.addCamera(limelightFeed);
-    // Shuffleboard.getTab("tab").add(limelightFeed);
-        SmartDashboard.putBoolean("key", mControlBoard.driverController.A_Button.wasActivated());
+    mDriveControls.o_reportBotControlData();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -124,10 +108,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // var alliance = DriverStation.getAlliance();
     SmartDashboard.putString("ALLIANCE", RobotContainer.isRedAlliance().get().toString());
     mControlBoard.update();
-    mDriveControls.oneControllerMode();
+    mDriveControls.runControllerMode();
   }
 
   @Override

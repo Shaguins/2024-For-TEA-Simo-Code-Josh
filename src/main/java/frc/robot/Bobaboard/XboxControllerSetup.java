@@ -117,6 +117,22 @@ public void setDeadband(double deadband) {
 		return Rotation2d.fromDegrees(getPOV());
 	}
 
+	public boolean getFaceButtonA(){
+		return getRawButtonPressed(A_BUTTON);
+	}
+
+	public boolean getFaceButtonB(){
+		return getRawButtonPressed(B_BUTTON);
+	}
+
+	public boolean getFaceButtonX(){
+		return getRawButtonPressed(X_BUTTON);
+	}
+
+	public boolean getFaceButtonY(){
+		return getRawButtonPressed(Y_BUTTON);
+	}
+
 	public class ButtonCheck {
 		boolean buttonCheck = false;
 		boolean buttonActive = false;
