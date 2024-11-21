@@ -102,6 +102,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    mControlBoard.verifyPossibleControllerInit();
     mDriveControls.selectControllerOption();
   }
 
@@ -109,6 +110,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     SmartDashboard.putString("ALLIANCE", RobotContainer.isRedAlliance().get().toString());
+    mControlBoard.verifyControllerIntegrity();
     mControlBoard.update();
     mDriveControls.runControllerMode();
   }
