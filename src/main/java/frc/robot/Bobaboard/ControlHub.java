@@ -18,17 +18,17 @@ public class ControlHub {
 		return mInstance;
 	}
 
-	public SimpleXboxControllerSetup driverController;
-	public SimpleXboxControllerSetup operatorController;
-	public SimpleXboxControllerSetup tControllerSetup1;
-	public SimpleXboxControllerSetup tControllerSetup2;
+	public XboxControllerSetup driverController;
+	public XboxControllerSetup operatorController;
+	public XboxControllerSetup tControllerSetup1;
+	public XboxControllerSetup tControllerSetup2;
 	// Optional<Integer> testController = Optional.of();
 
 	boolean testBoolean = false;
 
 	private ControlHub() {
-		driverController = new SimpleXboxControllerSetup(Constants.OIConstants.kDriverControllerPort);
-		operatorController = new SimpleXboxControllerSetup(Constants.OIConstants.kOperatorControllerPort);
+		driverController = new XboxControllerSetup(Constants.OIConstants.kDriverControllerPort);
+		operatorController = new XboxControllerSetup(Constants.OIConstants.kOperatorControllerPort);
 	}
 
 	public void verifyControllerIntegrity(){
@@ -40,8 +40,8 @@ public class ControlHub {
 	}
 
 	public boolean verifyPossibleControllerInit(){
-		tControllerSetup1 = new SimpleXboxControllerSetup(Constants.OIConstants.kDriverControllerPort);
-		tControllerSetup2 = new SimpleXboxControllerSetup(Constants.OIConstants.kOperatorControllerPort);
+		tControllerSetup1 = new XboxControllerSetup(Constants.OIConstants.kDriverControllerPort);
+		tControllerSetup2 = new XboxControllerSetup(Constants.OIConstants.kOperatorControllerPort);
 		if (tControllerSetup1.isConnected() == false || tControllerSetup2.isConnected() == false){
 			tControllerSetup1 = null;
 			tControllerSetup2 = null;

@@ -68,17 +68,17 @@ public class BotControls {
             
         }else{
             if (controlHub.operatorController.L_Bumper.wasActivated()) {
-                rContainer.FallOffChain();
+                rContainer.FallOffChain().schedule();
             }else if (controlHub.operatorController.R_Bumper.wasActivated()){
-                rContainer.ClimbChain();
+                rContainer.ClimbChain().schedule();
             }else if (controlHub.operatorController.X_Button.wasActivated()){
-                rContainer.StowArm();
+                rContainer.StowArm().schedule();
             }else if (controlHub.operatorController.Y_Button.wasActivated()){
-                rContainer.ScoreNote();
+                rContainer.ScoreNote().schedule();
             }else if (controlHub.driverController.L_Bumper.wasActivated()){
-                rContainer.IntakeNotePrep();
+                rContainer.IntakeNotePrep().schedule();
             }else if (controlHub.driverController.R_Bumper.wasActivated()){
-                rContainer.IntakeNoteStow();
+                rContainer.IntakeNoteStow().schedule();
             }
         }
     }
