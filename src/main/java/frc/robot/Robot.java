@@ -56,7 +56,7 @@ import frc.utils.CoordinateSpace;
  */
 public class Robot extends TimedRobot {
   public RobotContainer m_robotContainer;
-  private final static ControlHub mControlBoard = ControlHub.getInstance();
+  private final ControlHub mControlBoard = ControlHub.getInstance();
   private final BotControls mDriveControls = new BotControls();
   /**
    * This function is run when the robot is first started up and should be used for any
