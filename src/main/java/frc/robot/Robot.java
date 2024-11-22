@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.littletonrobotics.urcl.URCL;
@@ -32,6 +33,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -54,6 +56,8 @@ import frc.utils.CoordinateSpace;
  */
 public class Robot extends TimedRobot {
   public RobotContainer m_robotContainer;
+  private final ControlHub mControlBoard = ControlHub.getInstance();
+  private final BotControls mDriveControls = new BotControls();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -65,23 +69,16 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     URCL.start();
     DriverStation.startDataLog(DataLogManager.getLog());
-    BotControls.ChooseControllers();
-  }
+    mDriveControls.PutControllerOption();
+  } 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // HttpCamera limelightFeed = new HttpCamera("limelight", "http://10.2.53.11", HttpCameraKind.kMJPGStreamer);
-    // // CameraServer.startAutomaticCapture(limelightFeed);
-    // CameraServer.addCamera(limelightFeed);
-    // Shuffleboard.getTab("tab").add(limelightFeed);
+    mDriveControls.o_reportBotControlData();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -94,26 +91,30 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-      Command m_AutoSchedule = AutoModeManager.returnAutoCommand();
-      m_AutoSchedule.schedule();
+    AutoModeManager.updateAutoMode();
+    AutoModeManager.m_autonomousCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit() {
+    mControlBoard.verifyPossibleControllerInit();
+    mDriveControls.selectControllerOption();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // var alliance = DriverStation.getAlliance();
     SmartDashboard.putString("ALLIANCE", RobotContainer.isRedAlliance().get().toString());
-    ControlHub.update();
-    BotControls.oneControllerMode();
+    mControlBoard.verifyControllerIntegrity();
+    mControlBoard.update();
+    mDriveControls.RunRobot();
   }
+        
 
   @Override
   public void testInit() {

@@ -23,7 +23,7 @@ import frc.utils.Util;
 //     driver_DPAD_LEFT = new POVButton(driverController, 270);
 
 public class XboxControllerSetup extends XboxController {
-    private static final double PRESS_THRESHOLD = 0.05;
+    private static final double PRESS_THRESHOLD = 0.1;
 	private double DEAD_BAND = 0.2;
 	private boolean rumbling = false;
 	public ButtonCheck
@@ -83,38 +83,54 @@ public void setDeadband(double deadband) {
 
 	@Override
 	public double getLeftX() {
-		return Util.deadBand(getLeftX(), DEAD_BAND);
+		return Util.deadBand(getRawAxis(0), DEAD_BAND);
 	}
 
 	@Override
 	public double getRightX() {
-		return Util.deadBand(getRightX(), DEAD_BAND);
+		return Util.deadBand(getRawAxis(4), DEAD_BAND);
 	}
 
 	@Override
 	public double getLeftY() {
-		return Util.deadBand(getLeftY(), DEAD_BAND);
+		return Util.deadBand(getRawAxis(1), DEAD_BAND);
 	}
 
 	@Override
 	public double getRightY() {
-		return Util.deadBand(getRightY(), DEAD_BAND);
+		return Util.deadBand(getRawAxis(5), DEAD_BAND);
 	}
     //Note: Drive Default Command = get## * -1
 
 	@Override
 	public double getLeftTriggerAxis() {
-		return Util.deadBand(getLeftTriggerAxis(), PRESS_THRESHOLD);
+		return Util.deadBand(getRawAxis(2), PRESS_THRESHOLD);
 	}
 
 	@Override
 	public double getRightTriggerAxis() {
-		return Util.deadBand(getRightTriggerAxis(), PRESS_THRESHOLD);
+		return Util.deadBand(getRawAxis(3), PRESS_THRESHOLD);
 	}
 
 	public Rotation2d getPOVDirection() {
 		System.out.println(getPOV());
 		return Rotation2d.fromDegrees(getPOV());
+	}
+
+	public boolean getFaceButtonA(){
+		return getRawButtonPressed(A_BUTTON);
+	}
+
+	public boolean getFaceButtonB(){
+		return getRawButtonPressed(B_BUTTON);
+	}
+
+	public boolean getFaceButtonX(){
+		return getRawButtonPressed(X_BUTTON);
+	}
+
+	public boolean getFaceButtonY(){
+		return getRawButtonPressed(Y_BUTTON);
 	}
 
 	public class ButtonCheck {
@@ -160,6 +176,18 @@ public void setDeadband(double deadband) {
 						break;
 					case POV_270:
 						buttonCheck = (getPOV() == 270);
+						break;
+					case A_BUTTON:
+						buttonCheck = (getFaceButtonA());
+						break;
+					case X_BUTTON:
+						buttonCheck = (getFaceButtonX());
+						break;
+					case Y_BUTTON:
+						buttonCheck = (getFaceButtonY());
+						break;
+					case B_BUTTON:
+						buttonCheck = (getFaceButtonB());
 						break;
 					default:
 						buttonCheck = false;
@@ -265,8 +293,8 @@ public void setDeadband(double deadband) {
 		Y_Button.update();
 		L_Bumper.update();
 		R_Bumper.update();
-		L_Trigger.update();
-		R_Trigger.update();
+		// L_Trigger.update();
+		// R_Trigger.update();
 		POV0.update();
 		POV90.update();
 		POV180.update();
