@@ -219,8 +219,8 @@ public void setDeadband(double deadband) {
 		Y_Button.update();
 		L_Bumper.update();
 		R_Bumper.update();
-		L_Trigger.update();
-		R_Trigger.update();
+		// L_Trigger.update();
+		// R_Trigger.update();
 		POV0.update();
 		POV90.update();
 		POV180.update();
