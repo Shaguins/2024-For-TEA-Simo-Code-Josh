@@ -13,6 +13,8 @@ public class BotControls {
 
 	RobotContainer rContainer = RobotContainer.getInstance();
     ControlHub controlHub = ControlHub.getInstance();
+    Arm arm = Arm.getInstance();
+    Hook hook = Hook.getInstance();
 
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
     public boolean OneControllerQuery = true;
