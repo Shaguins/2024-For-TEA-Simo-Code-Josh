@@ -3,6 +3,7 @@ package frc.robot.Bobaboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveSubsystem;
@@ -12,9 +13,6 @@ public class BotControls {
 
 	RobotContainer rContainer = RobotContainer.getInstance();
     ControlHub controlHub = ControlHub.getInstance();
-
-    Arm arm = Arm.getInstance();
-    Hook hook = Hook.getInstance();
 
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
     public boolean OneControllerQuery = true;
@@ -37,33 +35,33 @@ public class BotControls {
 
     public final void o_reportBotControlData(){
         SmartDashboard.putBoolean("m_ControllerSelected", OneControllerQuery);
-        SmartDashboard.putBoolean("Driver A Button", controlHub.driverController.A_Button.wasActivated());
-        SmartDashboard.putBoolean("Driver B Button", controlHub.driverController.X_Button.wasActivated());
-        SmartDashboard.putBoolean("Driver X Button", controlHub.driverController.getFaceButtonX());
-        SmartDashboard.putBoolean("Driver Y Button", controlHub.driverController.getFaceButtonY());
-        SmartDashboard.putBoolean("Operator X Button", controlHub.operatorController.getFaceButtonX());
-        SmartDashboard.putBoolean("Operator Y Button", controlHub.operatorController.getFaceButtonY());
+        SmartDashboard.putBoolean("Driver A Button", controlHub.driverController.A_Button.isBeingPressed());
+        SmartDashboard.putBoolean("Driver B Button", controlHub.driverController.X_Button.isBeingPressed());
+        SmartDashboard.putBoolean("Driver X Button", controlHub.driverController.X_Button.isBeingPressed());
+        SmartDashboard.putBoolean("Driver Y Button", controlHub.driverController.Y_Button.isBeingPressed());
+        SmartDashboard.putBoolean("Operator X Button", controlHub.operatorController.X_Button.isBeingPressed());
+        SmartDashboard.putBoolean("Operator Y Button", controlHub.operatorController.Y_Button.isBeingPressed());
     }
 
-    public final void RunRobot(){
+    public void RunRobot(){
         if (OneControllerQuery == true){
             if (controlHub.driverController.A_Button.wasActivated()) {
                 System.out.println("A Button Detected");
-                rContainer.FallOffChain();
+                rContainer.FallOffChain().schedule();
             }else if (controlHub.driverController.B_Button.wasActivated()){
-                rContainer.ClimbChain();
+                rContainer.ClimbChain().schedule();
             }
 
             if (controlHub.driverController.X_Button.wasActivated()){
-                rContainer.StowArm();
+                rContainer.StowArm().schedule();
             }else if (controlHub.driverController.Y_Button.wasActivated()){
-                rContainer.ScoreNote();
+                rContainer.ScoreNote().schedule();
             }
             
             if (controlHub.driverController.L_Bumper.wasActivated()){
-                rContainer.IntakeNotePrep();
+                rContainer.IntakeNotePrep().schedule();
             }else if (controlHub.driverController.R_Bumper.wasActivated()){
-                rContainer.IntakeNoteStow();
+                rContainer.IntakeNoteStow().schedule();
             }
             
         }else{
@@ -71,9 +69,9 @@ public class BotControls {
                 rContainer.FallOffChain();
             }else if (controlHub.operatorController.R_Bumper.wasActivated()){
                 rContainer.ClimbChain();
-            }else if (controlHub.operatorController.getFaceButtonX()){
+            }else if (controlHub.operatorController.X_Button.wasActivated()){
                 rContainer.StowArm();
-            }else if (controlHub.operatorController.getFaceButtonY()){
+            }else if (controlHub.operatorController.Y_Button.wasActivated()){
                 rContainer.ScoreNote();
             }else if (controlHub.driverController.L_Bumper.wasActivated()){
                 rContainer.IntakeNotePrep();

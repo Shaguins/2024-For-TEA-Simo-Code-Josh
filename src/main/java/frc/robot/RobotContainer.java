@@ -114,32 +114,32 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
 
-  public void RunArmPositive(){
-    new RunCommand(() -> arm.setOpenLoop(.2), arm);
+  public Command RunArmPositive(){
+    return new RunCommand(() -> arm.setOpenLoop(.2), arm);
   }
 
-  public void RunArmNegative(){
-    new RunCommand(() -> arm.setOpenLoop(-0.2), arm);
+  public Command RunArmNegative(){
+    return new RunCommand(() -> arm.setOpenLoop(-0.2), arm);
   }
 
-  public void RunHookPositive(){
-    new RunCommand(() -> hook.setOpenLoop(.1), hook);
+  public Command RunHookPositive(){
+    return new RunCommand(() -> hook.setOpenLoop(.1), hook);
   }
 
-  public void RunHookNegative(){
-    new RunCommand(() -> hook.setOpenLoop(-0.1), hook);
+  public Command RunHookNegative(){
+    return new RunCommand(() -> hook.setOpenLoop(-0.1), hook);
   }
 
-  public void IntakeNotePrep(){
-    new RunCommand(() -> hook.setHookState(States.HookPos.OPEN), hook);
+  public Command IntakeNotePrep(){
+    return new RunCommand(() -> hook.setHookState(States.HookPos.OPEN), hook);
   }
 
-  public void IntakeNoteStow(){
-    new RunCommand(() -> hook.setHookState(States.HookPos.STOW), hook);
+  public Command IntakeNoteStow(){
+    return new RunCommand(() -> hook.setHookState(States.HookPos.STOW), hook);
   }
 
-  public void ScoreNote(){
-    new ParallelCommandGroup(
+  public Command ScoreNote(){
+    return new ParallelCommandGroup(
           new RunCommand(() -> {
             arm.setArmState(States.ArmPos.SCORE);
             }, arm),
@@ -153,21 +153,21 @@ public class RobotContainer {
         );
   }
 
-  public void StowArm(){
-    new RunCommand(() -> {
+  public Command StowArm(){
+  return new RunCommand(() -> {
         arm.setArmState(States.ArmPos.STOW); 
         hook.setHookState(States.HookPos.STOW);
        }, arm, hook);
   }
 
-  public void ClimbChain(){
-    new RunCommand(() -> {
+  public Command ClimbChain(){
+  return new RunCommand(() -> {
         arm.setArmState(States.ArmPos.CLIMB_UP); 
        }, arm);
   }
 
-  public void FallOffChain(){
-  new RunCommand(() -> {
+  public Command FallOffChain(){
+  return new RunCommand(() -> {
           arm.setArmState(States.ArmPos.CLIMB_DOWN); 
         }, arm);
   }
