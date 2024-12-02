@@ -38,10 +38,10 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Limelight Distance", lastDistance);
         SmartDashboard.putNumber("Limelight Angular Error", lastTX % 360);
 
-        if (LimelightHelpers.getTV("limelight-front")) {
+        if (LimelightHelpers.getTV("limelight")) {
             lastTX = DriveSubsystem.getInstance().getRotation2DHeading().getDegrees()
-                    - (LimelightHelpers.getTX("limelight-front"));
-            Pose3d tagPose = LimelightHelpers.getTargetPose3d_CameraSpace("limelight-front");
+                    - (LimelightHelpers.getTX("limelight"));
+            Pose3d tagPose = LimelightHelpers.getTargetPose3d_CameraSpace("limelight");
             lastDistance = tagPose.getTranslation().getNorm();
             isOld = false;
 

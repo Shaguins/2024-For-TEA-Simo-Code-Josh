@@ -55,7 +55,7 @@ public class BotControls {
             }
 
             if (controlHub.driverController.X_Button.wasActivated()){
-                rContainer.StowArm().schedule();
+                rContainer.ampAutoDrive().schedule();
             }else if (controlHub.driverController.Y_Button.wasActivated()){
                 rContainer.ScoreNote().schedule();
             }

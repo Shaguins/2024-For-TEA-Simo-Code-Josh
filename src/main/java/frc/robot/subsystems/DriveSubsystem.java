@@ -103,7 +103,7 @@ public class DriveSubsystem extends SubsystemBase {
       });
 
       SwerveDrivePoseEstimator odometryVision = new SwerveDrivePoseEstimator(DriveConstants.kDriveKinematics,
-      getRotation2DHeading(), new SwerveModulePosition[] {
+      Rotation2d.fromDegrees(-Nav_x.getAngle()), new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
               m_rearLeft.getPosition(),
@@ -158,10 +158,24 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
 
-    odometryVision.update(getRotation2DHeading(), returnSwerverModulePositions());
+    odometryVision.update(
+      Rotation2d.fromDegrees(-Nav_x.getAngle()),
+      new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+      });
+
     SmartDashboard.putData("Field", m_field);
     m_field.setRobotPose(odometryVision.getEstimatedPosition());
-    addVisionMeasurement("limelight");
+    
+    try {
+      addVisionMeasurement("limelight");
+    }
+    catch(Exception erException) {
+      System.out.println("No Valid Limelight Targets");
+    }
 
 
     double[] driveMotorCurrent = {
@@ -193,7 +207,7 @@ public class DriveSubsystem extends SubsystemBase {
             odometryVision.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
         }
     }
-}
+  }
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -369,7 +383,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation2DHeading(){
-    return Nav_x.getRotation2d();
+    return Rotation2d.fromDegrees(-Nav_x.getAngle());
   }
 
   public Pose2d getCurrentPose() {
@@ -386,14 +400,14 @@ public class DriveSubsystem extends SubsystemBase {
   setModuleStates(lockStates);
 }
 
-  public SwerveModulePosition[] returnSwerverModulePositions(){
-    return new SwerveModulePosition[] {
-      m_frontLeft.getPosition(),
-      m_frontRight.getPosition(),
-      m_rearLeft.getPosition(),
-      m_rearRight.getPosition()
-};
-  }
+//   public SwerveModulePosition[] returnSwerverModulePositions(){
+//     return new SwerveModulePosition[] {
+//       m_frontLeft.getPosition(),
+//       m_frontRight.getPosition(),
+//       m_rearLeft.getPosition(),
+//       m_rearRight.getPosition()
+// };
+//   }
   /**
    * Returns the turn rate of the robot.
    *
