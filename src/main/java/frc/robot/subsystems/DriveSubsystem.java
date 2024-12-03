@@ -89,7 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
-  final Field2d m_field = new Field2d();
+  final Field2d m_fieldGyro = new Field2d();
+  final Field2d m_fieldVision = new Field2d();
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -167,9 +168,11 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
       });
 
-    SmartDashboard.putData("Field", m_field);
-    m_field.setRobotPose(odometryVision.getEstimatedPosition());
-    
+    SmartDashboard.putData("Field Gyro", m_fieldGyro);
+    SmartDashboard.putData("Field Vision", m_fieldVision);
+    m_fieldGyro.setRobotPose(m_odometry.getPoseMeters());
+    m_fieldVision.setRobotPose(odometryVision.getEstimatedPosition());
+
     try {
       addVisionMeasurement("limelight");
     }

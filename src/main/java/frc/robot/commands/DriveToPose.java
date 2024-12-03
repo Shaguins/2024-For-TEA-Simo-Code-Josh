@@ -11,19 +11,23 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveToPose extends Command {
     private Supplier<Pose2d> target;
     private Pose2d tolerance;
-    private final DriveSubsystem driveRequire = DriveSubsystem.getInstance();
+    private final DriveSubsystem driveRequire = RobotContainer.getInstance().m_robotDrive;
 
     private final HolonomicDriveController holonomicDriveController;
     private final PIDController xController;
     private final PIDController yController;
     private final ProfiledPIDController rotController;
 
+    //Note: Possibel Fix for Invalid Static Reference to DriveSubsys which has been causing the runtime crash
+    // Vision Pose Estimation works but gets interefered by "estimated velocities"
+    // Sometimes the position gets flipped which is unideal (find fix later)
     public DriveToPose(Supplier<Pose2d> target, Pose2d tolerance) {
         this.target = target;
         this.tolerance = tolerance;
