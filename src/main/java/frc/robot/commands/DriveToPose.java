@@ -32,8 +32,8 @@ public class DriveToPose extends Command {
         this.target = target;
         this.tolerance = tolerance;
 
-        xController = new PIDController(.1, 0, 0);
-        yController = new PIDController(.1, 0, 0);
+        xController = new PIDController(.01, 0, 0);
+        yController = new PIDController(.01, 0, 0);
 
         rotController = new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(4, 4));
 

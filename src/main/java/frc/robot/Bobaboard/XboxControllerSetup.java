@@ -284,6 +284,10 @@ public void setDeadband(double deadband) {
 		public boolean isBeingPressed() {
 			return buttonActive;
 		}
+
+		public boolean isNotBeingPressed(){
+			return !buttonActive;
+		}
 	}
 
 	public void update() {

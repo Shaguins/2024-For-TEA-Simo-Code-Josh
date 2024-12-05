@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
@@ -102,6 +103,10 @@ public class RobotContainer {
           -MathUtil.applyDeadband(m_ControlHub.driverController.getRightX(), OIConstants.kDriveDeadband),
           true, true),
       m_robotDrive));
+      NamedCommands.registerCommand("ScoreNote", ScoreNote());
+      NamedCommands.registerCommand("StowArm", StowArm());
+      NamedCommands.registerCommand("OpenHook", IntakeNotePrep());
+      NamedCommands.registerCommand("CloseHook", IntakeNoteStow());
   }
 
 
@@ -215,11 +220,9 @@ public class RobotContainer {
     return DriverStation.getAlliance();
   }
 
-  public Command ampAutoDrive() {
+  public static Command ampAutoDrive() {
     return new DriveToPose(FieldSetup.allianceAmpEntryPoseSupplier, FieldSetup.ampEntryTolerance);
   }
-
-
 
 }
 

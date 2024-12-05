@@ -54,9 +54,13 @@ public class BotControls {
                 rContainer.ClimbChain().schedule();
             }
 
-            if (controlHub.driverController.X_Button.wasActivated()){
-                rContainer.ampAutoDrive().schedule();
-            }else if (controlHub.driverController.Y_Button.wasActivated()){
+            if (!controlHub.driverController.X_Button.isNotBeingPressed()){
+                RobotContainer.ampAutoDrive().cancel();
+            } else if (controlHub.driverController.X_Button.isBeingPressed()){
+                RobotContainer.ampAutoDrive().schedule();
+            }
+            
+                if (controlHub.driverController.Y_Button.wasActivated()){
                 rContainer.ScoreNote().schedule();
             }
             
