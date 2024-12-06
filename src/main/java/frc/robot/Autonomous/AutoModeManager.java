@@ -13,7 +13,8 @@ public final class AutoModeManager{
 		GO_PATH_AUTO,
         RETURN_PATH_AUTO,
         ONE_NOTE_AUTO,
-        PLAYOFF_AUTO
+        PLAYOFF_AUTO,
+        THREE_NOTE
 	}
 
     public static AutoModeManager AutoQueue;
@@ -34,6 +35,7 @@ public final class AutoModeManager{
     mModeChooser.addOption("One Notw", DesiredMode.ONE_NOTE_AUTO);
     mModeChooser.addOption("IgnoreReturn", DesiredMode.RETURN_PATH_AUTO);
     mModeChooser.addOption("Playoff", DesiredMode.PLAYOFF_AUTO);
+    mModeChooser.addOption("Three Note Auto", DesiredMode.THREE_NOTE);
     mModeChooser.setDefaultOption("Default Auto", DesiredMode.DO_NOTHING);
 
     }
@@ -64,6 +66,9 @@ public final class AutoModeManager{
                 break;
 			case PLAYOFF_AUTO:
 				m_autonomousCommand = PlayoffAutoCommand.ScorePlayoffAuto();
+                break;
+            case THREE_NOTE:
+                m_autonomousCommand = ThreeNoteAutoCommand.score3NoteCommand();
                 break;
             // case RETURN_PATH_AUTO:
 			// 	return Optional.of(new TestPathMode());

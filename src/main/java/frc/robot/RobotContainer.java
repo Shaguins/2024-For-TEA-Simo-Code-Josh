@@ -103,10 +103,10 @@ public class RobotContainer {
           -MathUtil.applyDeadband(m_ControlHub.driverController.getRightX(), OIConstants.kDriveDeadband),
           true, true),
       m_robotDrive));
-      NamedCommands.registerCommand("ScoreNote", ScoreNote());
-      NamedCommands.registerCommand("StowArm", StowArm());
-      NamedCommands.registerCommand("OpenHook", IntakeNotePrep());
-      NamedCommands.registerCommand("CloseHook", IntakeNoteStow());
+      NamedCommands.registerCommand("ScoreNote", new InstantCommand(() -> ScoreNote()));
+      NamedCommands.registerCommand("StowArm", new InstantCommand(() -> StowArm()));
+      NamedCommands.registerCommand("OpenHook", new InstantCommand(() -> IntakeNotePrep()));
+      NamedCommands.registerCommand("CloseHook", new InstantCommand(() -> IntakeNoteStow()));
   }
 
 
