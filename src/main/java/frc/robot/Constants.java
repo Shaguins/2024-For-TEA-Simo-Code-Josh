@@ -161,10 +161,10 @@ public final class Constants {
     public static final double climb_up = 4.143260; //1.25; //500:1 - cu - 7.238
     public static final double climb_down = -.15; //0.148; // 500:1 cd - -.15
     public static final double pidOutputLow = -1;
-    public static final double pidOutputHigh = 1.2;
-    public static double kP = 1.5; //500:1 - 1.2
+    public static final double pidOutputHigh = 2.5;
+    public static double kP = 2.5; //500:1 - 1.2
     public static double kI = 0.0;
-    public static double kD = 0.7; // 500:1 - 0.3
+    public static double kD = 0.3; // 500:1 - 0.3
     public static double climbP = 1; // 500:1 - 1.0
     public static double climbI = 0.0;
     public static double climbD = 0.0;

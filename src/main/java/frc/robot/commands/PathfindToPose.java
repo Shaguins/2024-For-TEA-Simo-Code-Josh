@@ -1,68 +1,98 @@
-// package frc.robot.commands;
+package frc.robot.commands;
 
-// import java.util.function.Supplier;
+import java.util.function.Supplier;
 
-// import edu.wpi.first.math.controller.HolonomicDriveController;
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.ProfiledPIDController;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.kinematics.ChassisSpeeds;
-// import edu.wpi.first.math.kinematics.SwerveModuleState;
-// import edu.wpi.first.math.trajectory.TrapezoidProfile;
-// import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.Constants;
-// import frc.robot.RobotContainer;
-// import frc.robot.Constants.AutoConstants;
-// import frc.robot.subsystems.DriveSubsystem;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.PPLibTelemetry;
 
-// public class PathfindToPose extends Command {
-//     private Supplier<Pose2d> target;
-//     private Pose2d tolerance;
-//     private final DriveSubsystem driveRequire = RobotContainer.getInstance().m_robotDrive;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveSubsystem;
 
-//     private final HolonomicDriveController holonomicDriveController;
-//     private final PIDController xController;
-//     private final PIDController yController;
-//     private final ProfiledPIDController rotController;
+public class PathfindToPose extends Command {
+    private Supplier<Pose2d> target;
+    private Pose2d tolerance;
+    private boolean runCommand = false;
+    private final DriveSubsystem driveRequire = RobotContainer.getInstance().m_robotDrive;
 
-//     //Note: Possibel Fix for Invalid Static Reference to DriveSubsys which has been causing the runtime crash
-//     // Vision Pose Estimation works but gets interefered by "estimated velocities"
-//     // Sometimes the position gets flipped which is unideal (find fix later)
-//     public PathfindToPose(Supplier<Pose2d> target, Pose2d tolerance) {
-//         this.target = target;
-//         this.tolerance = tolerance;
+    private final HolonomicDriveController holonomicDriveController;
+    private final PIDController xController;
+    private final PIDController yController;
+    private final ProfiledPIDController rotController;
+    private PathPlannerPath currentPath;
+    private PathPlannerTrajectory currentTrajectory;
+    private double timeOffset = 0;
 
-//         xController = new PIDController(.01, 0, 0);
-//         yController = new PIDController(.01, 0, 0);
+    //Note: Possibel Fix for Invalid Static Reference to DriveSubsys which has been causing the runtime crash
+    // Vision Pose Estimation works but gets interefered by "estimated velocities"
+    // Sometimes the position gets flipped which is unideal (find fix later)
+    public PathfindToPose(Supplier<Pose2d> target, Pose2d tolerance, boolean runCommand) {
+        this.target = target;
+        this.tolerance = tolerance;
+        this.runCommand = runCommand;
 
-//         rotController = new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(4, 4));
+        xController = new PIDController(.1, 0, 0);
+        yController = new PIDController(.1, 0, 0);
+
+        rotController = new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(3.5, 3.5));
 
 
-//         // holonomicDriveController = new HolonomicDriveController(xController, yController, rotController);
-//         // holonomicDriveController.setTolerance(this.tolerance);
+        holonomicDriveController = new HolonomicDriveController(xController, yController, rotController);
+        holonomicDriveController.setTolerance(this.tolerance);
+        addRequirements(driveRequire);
+    }
 
-//         addRequirements(driveRequire);
-//     }
 
-//     @Override
-//     public void execute() {
-//         ChassisSpeeds chassisSpeeds = holonomicDriveController.calculate(driveRequire.getCurrentPose(), target.get(),
-//                 AutoConstants.kMaxSpeedMetersPerSecond, target.get().getRotation());
-//         SwerveModuleState[] swerveModuleStates = Constants.DriveConstants.kDriveKinematics
-//                 .toSwerveModuleStates(chassisSpeeds);
-//         driveRequire.setModuleStates(swerveModuleStates);
-//     }
+    @Override
+    public void execute() {
+        currentTrajectory = null;
+        timeOffset = 0;
+        Pose2d currentPose = driveRequire.getPoseVision();
+        Translation2d targetTranslation2d = ((Pose2d) target).getTranslation();
+        if (currentPose.getTranslation().getDistance(targetTranslation2d) > 0.25){
+            ChassisSpeeds currentSpeeds = driveRequire.getRobotRelativeSpeeds();
+            //PPLibTelemetry.setCurrentPose(currentPose);
+        }
+        PathConstraints constraints = new PathConstraints(3.0, 4.0,
+        Units.degreesToRadians(540),
+        Units.degreesToRadians(720));
 
-//     @Override
-//     public void end(boolean interrupted) {
-//         driveRequire.Xmode();
-//     }
+        Command pathfindingCommand = AutoBuilder.pathfindToPose(
+        (Pose2d) target,
+        constraints,
+        0.0, // Goal end velocity in meters/sec
+        0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+        );
+        if (runCommand != true){
+            pathfindingCommand.end(true);
+            System.out.println("PathFinding_Ended_Early");
+        } else if (runCommand == true) {
+            pathfindingCommand.schedule();
+        }
+    }
 
-//     @Override
-//     public boolean isFinished() {
-//         System.out.println(driveRequire.getCurrentPose().getX());
-//         System.out.println(holonomicDriveController.atReference());
-//         return holonomicDriveController.atReference();
-//     }
-// }
+    @Override
+    public void end(boolean interrupted) {
+        driveRequire.Xmode();
+    }
+
+    @Override
+    public boolean isFinished() {
+        System.out.println(driveRequire.getCurrentPose().getX());
+        System.out.println(holonomicDriveController.atReference());
+        return holonomicDriveController.atReference();
+    }
+}
 

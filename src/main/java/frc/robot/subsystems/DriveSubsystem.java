@@ -205,7 +205,7 @@ public class DriveSubsystem extends SubsystemBase {
     if (LimelightHelpers.getTV(limelight)) {
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight);
 
-        if (!(Math.abs(-Nav_x.getRate()) > 720) && !(mt2.tagCount == 0)) {
+        if (!(Math.abs(-Nav_x.getRate()) > 540) && !(mt2.tagCount == 0)) {
             odometryVision.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
             odometryVision.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
         }

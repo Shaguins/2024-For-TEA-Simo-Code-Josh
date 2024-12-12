@@ -15,6 +15,7 @@ public class BotControls {
     ControlHub controlHub = ControlHub.getInstance();
     Arm arm = Arm.getInstance();
     Hook hook = Hook.getInstance();
+    boolean interruptedPPLib;
 
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
     public boolean OneControllerQuery = true;
@@ -43,6 +44,8 @@ public class BotControls {
         SmartDashboard.putBoolean("Driver Y Button", controlHub.driverController.Y_Button.isBeingPressed());
         SmartDashboard.putBoolean("Operator X Button", controlHub.operatorController.X_Button.isBeingPressed());
         SmartDashboard.putBoolean("Operator Y Button", controlHub.operatorController.Y_Button.isBeingPressed());
+        SmartDashboard.putBoolean("Driver LBumper", controlHub.driverController.L_Bumper.isBeingPressed());
+        SmartDashboard.putBoolean("Driver RBumper", controlHub.driverController.R_Bumper.isBeingPressed());
     }
 
     public void RunRobot(){
@@ -50,25 +53,46 @@ public class BotControls {
             if (controlHub.driverController.A_Button.wasActivated()) {
                 System.out.println("A Button Detected");
                 rContainer.FallOffChain().schedule();
-            }else if (controlHub.driverController.B_Button.wasActivated()){
-                rContainer.ClimbChain().schedule();
             }
 
-            if (!controlHub.driverController.X_Button.isNotBeingPressed()){
-                RobotContainer.ampAutoDrive().cancel();
-            } else if (controlHub.driverController.X_Button.isBeingPressed()){
-                RobotContainer.ampAutoDrive().schedule();
+
+            if (controlHub.driverController.X_Button.wasActivated()){
+                if(interruptedPPLib == false){
+                    interruptedPPLib = true;
+                    try {RobotContainer.PathFindAmp(interruptedPPLib);}
+                        catch (Exception e){
+                            System.out.println("Failed To Start PPLib Command");
+                        }
+                    interruptedPPLib = false;
+                }else {interruptedPPLib = false;
+                    RobotContainer.PathFindAmp(interruptedPPLib);
+                }
+
+                RobotContainer.PathFindAmp(interruptedPPLib);
+            } else if (!controlHub.driverController.X_Button.wasActivated()){
+                RobotContainer.ampAutoDrive().end(true);
             }
             
                 if (controlHub.driverController.Y_Button.wasActivated()){
                 rContainer.ScoreNote().schedule();
             }
             
-            if (controlHub.driverController.L_Bumper.wasActivated()){
-                rContainer.IntakeNotePrep().schedule();
-            }else if (controlHub.driverController.R_Bumper.wasActivated()){
-                rContainer.IntakeNoteStow().schedule();
+            if (controlHub.driverController.L_Bumper.isBeingPressed()){
+                //rContainer.IntakeNotePrep().schedule();
+                rContainer.RunArmPositive();
             }
+    
+            if (controlHub.driverController.R_Bumper.isBeingPressed()){
+                //rContainer.IntakeNoteStow().schedule();
+                rContainer.RunArmNegative();
+            }
+
+            // if(controlHub.driverController.POV0.isBeingPressed()){
+            //     rContainer.RunArmPositive();
+            // }
+            // if (controlHub.driverController.POV180.isBeingPressed()){
+            //     rContainer.RunArmNegative();
+            // }
             
         }else{
             if (controlHub.operatorController.L_Bumper.wasActivated()) {

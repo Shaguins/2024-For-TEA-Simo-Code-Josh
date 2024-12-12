@@ -28,6 +28,7 @@ import frc.robot.Autonomous.AutoModeManager;
 import frc.robot.Bobaboard.BotControls;
 import frc.robot.Bobaboard.ControlHub;
 import frc.robot.commands.DriveToPose;
+import frc.robot.commands.PathfindToPose;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.HookConstants;
@@ -120,12 +121,12 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
 
-  public Command RunArmPositive(){
-    return new RunCommand(() -> arm.setOpenLoop(.2), arm);
+  public void RunArmPositive(){
+    new RunCommand(() -> arm.setOpenLoop(.2), arm);
   }
 
-  public Command RunArmNegative(){
-    return new RunCommand(() -> arm.setOpenLoop(-0.2), arm);
+  public void RunArmNegative(){
+    new RunCommand(() -> arm.setOpenLoop(-0.2), arm);
   }
 
   public Command RunHookPositive(){
@@ -222,6 +223,10 @@ public class RobotContainer {
 
   public static Command ampAutoDrive() {
     return new DriveToPose(FieldSetup.allianceAmpEntryPoseSupplier, FieldSetup.ampEntryTolerance);
+  }
+  
+  public static Command PathFindAmp(boolean permission){
+    return new PathfindToPose(FieldSetup.allianceAmpEntryPoseSupplier, FieldSetup.ampEntryTolerance,permission);
   }
 
 }
