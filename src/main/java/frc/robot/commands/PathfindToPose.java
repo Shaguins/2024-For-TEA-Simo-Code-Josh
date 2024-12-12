@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -34,6 +35,7 @@ public class PathfindToPose extends Command {
     private PathPlannerPath currentPath;
     private PathPlannerTrajectory currentTrajectory;
     private double timeOffset = 0;
+    public RunCommand newCommand;
 
     //Note: Possibel Fix for Invalid Static Reference to DriveSubsys which has been causing the runtime crash
     // Vision Pose Estimation works but gets interefered by "estimated velocities"
@@ -59,6 +61,7 @@ public class PathfindToPose extends Command {
     public void execute() {
         currentTrajectory = null;
         timeOffset = 0;
+
         Pose2d currentPose = driveRequire.getPoseVision();
         Translation2d targetTranslation2d = ((Pose2d) target).getTranslation();
         if (currentPose.getTranslation().getDistance(targetTranslation2d) > 0.25){
@@ -75,12 +78,14 @@ public class PathfindToPose extends Command {
         0.0, // Goal end velocity in meters/sec
         0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
         );
-        if (runCommand != true){
+        if (runCommand == false){
             pathfindingCommand.end(true);
             System.out.println("PathFinding_Ended_Early");
         } else if (runCommand == true) {
-            pathfindingCommand.schedule();
+            newCommand = new RunCommand((Runnable) pathfindingCommand, driveRequire);
+            newCommand.schedule();
         }
+
     }
 
     @Override

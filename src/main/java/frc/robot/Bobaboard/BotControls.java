@@ -49,33 +49,29 @@ public class BotControls {
     }
 
     public void RunRobot(){
-        if (OneControllerQuery == true){
+    if (OneControllerQuery == true){
             if (controlHub.driverController.A_Button.wasActivated()) {
                 System.out.println("A Button Detected");
                 rContainer.FallOffChain().schedule();
             }
 
-
             if (controlHub.driverController.X_Button.wasActivated()){
-                if(interruptedPPLib == false){
-                    interruptedPPLib = true;
-                    try {RobotContainer.PathFindAmp(interruptedPPLib);}
-                        catch (Exception e){
-                            System.out.println("Failed To Start PPLib Command");
-                        }
-                    interruptedPPLib = false;
-                }else {interruptedPPLib = false;
-                    RobotContainer.PathFindAmp(interruptedPPLib);
-                }
-
-                RobotContainer.PathFindAmp(interruptedPPLib);
-            } else if (!controlHub.driverController.X_Button.wasActivated()){
-                RobotContainer.ampAutoDrive().end(true);
+                RobotContainer.PathFindAmp(true);
             }
+                // if(interruptedPPLib == false){
+                //     interruptedPPLib = true;
+                //     try {RobotContainer.PathFindAmp(interruptedPPLib);}
+                //         catch (Exception e){
+                //             System.out.println("Failed To Start PPLib Command");
+                //         }
+                //     interruptedPPLib = false;
+                // }else {interruptedPPLib = false;
+                //     RobotContainer.PathFindAmp(false).end(true);;
+                // }            }
             
                 if (controlHub.driverController.Y_Button.wasActivated()){
                 rContainer.ScoreNote().schedule();
-            }
+                }
             
             if (controlHub.driverController.L_Bumper.isBeingPressed()){
                 //rContainer.IntakeNotePrep().schedule();

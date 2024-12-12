@@ -32,6 +32,7 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -137,6 +138,7 @@ public class DriveSubsystem extends SubsystemBase {
       },
       this // Reference to this subsystem to set requirements
     );
+    Nav_x.zeroYaw();
   }
 
   public static synchronized DriveSubsystem getInstance() {
@@ -206,8 +208,8 @@ public class DriveSubsystem extends SubsystemBase {
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight);
 
         if (!(Math.abs(-Nav_x.getRate()) > 540) && !(mt2.tagCount == 0)) {
-            odometryVision.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
-            odometryVision.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+            odometryVision.setVisionMeasurementStdDevs(VecBuilder.fill(.6, .6, 9999999));
+            odometryVision.addVisionMeasurement(mt2.pose, Timer.getFPGATimestamp()); //Timer.getFPGATimestamp()mt2.timestampSeconds
         }
     }
   }
