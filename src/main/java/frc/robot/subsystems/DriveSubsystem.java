@@ -200,18 +200,25 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumberArray("POSE", pose);
 
   }
-
+  
+  double yaw;
+  double NTlatency = 0.003;
   public void addVisionMeasurement(String limelight) {
-    LimelightHelpers.SetRobotOrientation(limelight, -Nav_x.getRotation2d().getDegrees(), 0,
-            0, 0, 0, 0);
-    if (LimelightHelpers.getTV(limelight)) {
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight);
-
-        if (!(Math.abs(-Nav_x.getRate()) > 540) && !(mt2.tagCount == 0)) {
-            odometryVision.setVisionMeasurementStdDevs(VecBuilder.fill(.6, .6, 9999999));
-            odometryVision.addVisionMeasurement(mt2.pose, Timer.getFPGATimestamp()); //Timer.getFPGATimestamp()mt2.timestampSeconds
+    var isRedalliance = DriverStation.getAlliance();
+        if (isRedalliance.isPresent() && isRedalliance.get() == DriverStation.Alliance.Red) {
+          yaw = -Nav_x.getRotation2d().getDegrees(); // -180 degrees?
+        } else {
+          yaw = -Nav_x.getRotation2d().getDegrees();
         }
-    }
+      LimelightHelpers.SetRobotOrientation(limelight, yaw, 0,
+              0, 0, 0, 0);
+      if (LimelightHelpers.getTV(limelight)) {
+          LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelight);
+          if (!(Math.abs(-Nav_x.getRate()) > 540) && !(mt2.tagCount == 0)) {
+              odometryVision.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+              odometryVision.addVisionMeasurement(mt2.pose, Timer.getFPGATimestamp() - NTlatency); //Timer.getFPGATimestamp()mt2.timestampSeconds
+          }
+      }
   }
 
   /**
