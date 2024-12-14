@@ -61,19 +61,19 @@ public class PathfindToPose extends Command {
     public void execute() {
         currentTrajectory = null;
         timeOffset = 0;
-
-        Pose2d currentPose = driveRequire.getPoseVision();
-        Translation2d targetTranslation2d = ((Pose2d) target).getTranslation();
-        if (currentPose.getTranslation().getDistance(targetTranslation2d) > 0.25){
-            ChassisSpeeds currentSpeeds = driveRequire.getRobotRelativeSpeeds();
-            //PPLibTelemetry.setCurrentPose(currentPose);
-        }
+        // Pose2d currentPose = driveRequire.getPoseVision();
+        // // Translation2d targetTranslation2d = ((Pose2d) target).getTranslation();
+        // if (currentPose.getTranslation().getDistance(targetTranslation2d) > 0.25){
+        //     ChassisSpeeds currentSpeeds = driveRequire.getRobotRelativeSpeeds();
+        //     PPLibTelemetry.setCurrentPose(currentPose);
+        // }
         PathConstraints constraints = new PathConstraints(3.0, 4.0,
         Units.degreesToRadians(540),
         Units.degreesToRadians(720));
+        Pose2d confirmTarget = target.get();
 
         Command pathfindingCommand = AutoBuilder.pathfindToPose(
-        (Pose2d) target,
+        confirmTarget,
         constraints,
         0.0, // Goal end velocity in meters/sec
         0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
@@ -81,9 +81,8 @@ public class PathfindToPose extends Command {
         if (runCommand == false){
             pathfindingCommand.end(true);
             System.out.println("PathFinding_Ended_Early");
-        } else if (runCommand == true) {
-            newCommand = new RunCommand((Runnable) pathfindingCommand, driveRequire);
-            newCommand.schedule();
+        } else if (runCommand == true) { 
+            pathfindingCommand.schedule();
         }
 
     }

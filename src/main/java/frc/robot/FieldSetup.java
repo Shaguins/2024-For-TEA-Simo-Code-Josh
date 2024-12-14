@@ -66,11 +66,12 @@ public class FieldSetup {
 
         public static final Supplier<Pose2d> allianceAmpEntryPoseSupplier = () -> DriverStation.getAlliance()
                 .orElse(DriverStation.Alliance.Blue) == Alliance.Blue
-                        ? new Pose2d(getTagTranslation(kBlueAmpId).plus(ampEntryOffset),
+                        ? new Pose2d(getTagTranslation(kBlueAmpId),
                                 Rotation2d.fromDegrees(90))
-                        : new Pose2d(getTagTranslation(kRedAmpId).plus(ampEntryOffset),
+                        : new Pose2d(getTagTranslation(kRedAmpId),
                                 Rotation2d.fromDegrees(90));
-
+//.plus(ampEntryOffset)
+//.plus(ampEntryOffset)
 
         public static Translation2d getTagTranslation(int id) {
             if (kRedAprilTagLayout.containsKey(id)) {

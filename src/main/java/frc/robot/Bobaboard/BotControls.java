@@ -15,7 +15,7 @@ public class BotControls {
     ControlHub controlHub = ControlHub.getInstance();
     Arm arm = Arm.getInstance();
     Hook hook = Hook.getInstance();
-    boolean interruptedPPLib;
+    boolean interruptedPPLib = false;
 
     final static SendableChooser<Boolean> ControllerMode = new SendableChooser<>();
     public boolean OneControllerQuery = true;
@@ -56,7 +56,8 @@ public class BotControls {
             }
 
             if (controlHub.driverController.X_Button.wasActivated()){
-                RobotContainer.PathFindAmp(true);
+                interruptedPPLib = !interruptedPPLib;
+                RobotContainer.PathFindAmp(interruptedPPLib).schedule();
             }
                 // if(interruptedPPLib == false){
                 //     interruptedPPLib = true;
@@ -74,8 +75,6 @@ public class BotControls {
                 }
             
             if (controlHub.driverController.L_Bumper.isBeingPressed()){
-                //rContainer.IntakeNotePrep().schedule();
-                rContainer.RunArmPositive();
             }
     
             if (controlHub.driverController.R_Bumper.isBeingPressed()){
