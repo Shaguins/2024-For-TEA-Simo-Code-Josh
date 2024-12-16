@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import java.nio.file.Path;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -17,6 +18,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.RobotContainer;
@@ -78,14 +81,33 @@ public class PathfindToPose extends Command {
         0.0, // Goal end velocity in meters/sec
         0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
         );
-        if (runCommand == false){
-            pathfindingCommand.end(true);
-            System.out.println("PathFinding_Ended_Early");
-        } else if (runCommand == true) { 
-            pathfindingCommand.schedule();
+        
+        // Command pathFinish;
+        // PathPlannerPath pathBFinishCommand;
+        // PathPlannerPath pathRFinishCommand;
+
+        // pathBFinishCommand = PathPlannerPath.fromPathFile("B_AmpFinish");
+        // pathRFinishCommand = PathPlannerPath.fromPathFile("R_AmpFinish");
+        // System.out.println("Failed to Fetch Amp Files");
+        
+        // var alliance = DriverStation.getAlliance();
+        // if (alliance.isPresent()) {
+        //   if (alliance.get() == DriverStation.Alliance.Blue){
+        //     pathFinish = AutoBuilder.followPath(pathBFinishCommand);
+        //   }else {
+        //     pathFinish = AutoBuilder.followPath(pathRFinishCommand);
+        //   }
+
+            if (runCommand == false){
+                pathfindingCommand.end(true);
+                System.out.println("PathFinding_Ended_Early");
+            } else if (runCommand == true) { 
+                pathfindingCommand.schedule();
+                // pathFinish.schedule();
+            }
         }
 
-    }
+    
 
     @Override
     public void end(boolean interrupted) {

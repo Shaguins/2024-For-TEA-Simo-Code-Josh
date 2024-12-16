@@ -59,7 +59,7 @@ public class FieldSetup {
                                 .minus(new Translation2d(0, .10))
                         : getTagTranslation(kRedSpeakerId);
 
-        public static final Translation2d ampEntryOffset = new Translation2d(0, -2);
+        public static final Translation2d ampEntryOffset = new Translation2d(0, -0.5);
 
         public static final Pose2d ampEntryTolerance = new Pose2d(new Translation2d(0.2, 0.2),
                 Rotation2d.fromDegrees(1));
@@ -70,7 +70,6 @@ public class FieldSetup {
                                 Rotation2d.fromDegrees(90))
                         : new Pose2d(getTagTranslation(kRedAmpId),
                                 Rotation2d.fromDegrees(90));
-//.plus(ampEntryOffset)
 //.plus(ampEntryOffset)
 
         public static Translation2d getTagTranslation(int id) {
