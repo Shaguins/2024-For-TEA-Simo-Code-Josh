@@ -32,6 +32,7 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -69,7 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   private final static AHRS Nav_x = new AHRS(Port.kMXP);
-
+  public final boolean fieldFlipped = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
   // Locations for the swerve drive modules relative to the robot center.
   // Distance in meters
   Translation2d m_frontLeftLocation = new Translation2d(0.4086, 0.4086);
@@ -103,9 +104,9 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
       });
-
+      
       SwerveDrivePoseEstimator odometryVision = new SwerveDrivePoseEstimator(DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(-(Nav_x.getRotation2d().getDegrees())), new SwerveModulePosition[] {
+      (fieldFlipped ? getInitialFlippeRotation2d(): getRotation2DHeading()), new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
               m_rearLeft.getPosition(),
@@ -404,6 +405,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Rotation2d getRotation2DHeading(){
     return Rotation2d.fromDegrees(-Nav_x.getAngle());
+  }
+
+  public Rotation2d getInitialFlippeRotation2d(){
+    return Rotation2d.fromDegrees(-Nav_x.getAngle()).plus(Rotation2d.fromRadians(Math.PI));
   }
 
   public Pose2d getCurrentPose() {
